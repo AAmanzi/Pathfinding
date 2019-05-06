@@ -3,18 +3,26 @@
   padding: 0;
 }
 
-.Tile{
+.Tile {
   width: 23px;
   height: 23px;
   border: 1px solid black;
 }
 
-.Wall{
+.WallTile {
   background-color: #333;
 }
 
-.Board{
+.Board {
   margin: auto;
   display: flex;
   flex-wrap: wrap;
+}
+
+.StartTile {
+  background-color: green;
+}
+
+.EndTile {
+  background-color: red;
 }

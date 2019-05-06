@@ -13,8 +13,11 @@ class Board extends Component {
 
   handleDraw = index => {
     this.setState(prevState => {
-      let newTiles = [...prevState.wallTiles];
-      newTiles.push(index);
+      let tmpTiles = [...prevState.wallTiles];
+      let newTiles = tmpTiles.filter(tile => tile !== index);
+
+      if (!tmpTiles.find(tile => tile === index)) newTiles.push(index);
+
       return {
         wallTiles: newTiles
       };
@@ -22,11 +25,15 @@ class Board extends Component {
   };
 
   enableDrawing = () => {
-    this.setState({isDraw: true})
+    this.setState({ isDraw: true });
   };
 
   disableDrawing = () => {
-    this.setState({isDraw: false})
+    this.setState({ isDraw: false });
+  };
+
+  runAlgorithm = () => {
+    console.log(this.state);
   };
 
   createBoard = () => {
@@ -38,7 +45,15 @@ class Board extends Component {
       for (let j = 0; j < sideLength; ++j) {
         board.push(
           i === 0 || i === sideLength - 1 || j === 0 || j === sideLength - 1 ? (
-            <Tile key={j + sideLength * i} isWall={true} />
+            <Tile
+              key={j + sideLength * i}
+              isWall={
+                (i !== 0 || j !== 1) &&
+                (i !== sideLength - 1 || j !== sideLength - 2)
+              }
+              isStart={i === 0 && j === 1}
+              isEnd={i === sideLength - 1 && j === sideLength - 2}
+            />
           ) : (
             <Tile
               key={j + sideLength * i}
@@ -49,6 +64,7 @@ class Board extends Component {
                       return undefined;
                     }
               }
+              mouseClick={() => this.handleDraw(j + sideLength * i)}
               isWall={this.state.wallTiles.find(
                 tile => tile === j + sideLength * i
               )}
@@ -64,14 +80,18 @@ class Board extends Component {
     const { sideLength } = this.props;
     if (sideLength > 35) return <Error error="Maximum board size is 35!" />;
     return (
-      <div
-        className="Board"
-        style={{ maxWidth: `${sideLength * 25}px` }}
-        onMouseDown={this.enableDrawing}
-        onMouseUp={this.disableDrawing}
-      >
-        {this.createBoard()}
-      </div>
+      <>
+        <div
+          className="Board"
+          style={{ maxWidth: `${sideLength * 25}px` }}
+          onMouseDown={this.enableDrawing}
+          onMouseUp={this.disableDrawing}
+        >
+          {this.createBoard()}
+        </div>
+
+        <button onClick={() => this.runAlgorithm()}>Run</button>
+      </>
     );
   }
 }
