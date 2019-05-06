@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.Tile{
+  width: 23px;
+  height: 23px;
+  border: 1px solid black;
+}
+
+.Wall{
+  background-color: #333;
+}
+
+.Board{
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
