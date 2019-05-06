@@ -10,7 +10,7 @@
 }
 
 .WallTile {
-  background-color: #333;
+  background-color: #334;
 }
 
 .Board {
@@ -25,4 +25,8 @@
 
 .EndTile {
   background-color: red;
+}
+
+.PathTile{
+  background-color: #00babaaa;
 }

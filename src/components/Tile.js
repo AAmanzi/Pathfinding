@@ -11,6 +11,8 @@ const Tile = props => {
           ? "StartTile"
           : props.isEnd
           ? "EndTile"
+          : props.isPath
+          ? "PathTile"
           : "")
       }
       onMouseOver={props.mouseOver}
