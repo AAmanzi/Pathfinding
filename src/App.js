@@ -5,7 +5,7 @@ import Board from "./components/Board";
 function App() {
   return (
     <div className="App">
-      <Board/>
+      <Board sideLength={35}/>
     </div>
   );
 }
