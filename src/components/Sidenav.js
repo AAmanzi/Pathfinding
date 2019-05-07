@@ -1,12 +1,16 @@
 import React from "react";
 
 const Sidenav = props => {
+  // const handleChange = (event) => {
+  //   console.log(event.target.value)
+  // }
   return (
     <nav className="Sidenav">
       <ul className="SidenavList">
         <li>
-          <select>
+          <select onChange={props.handleAlgorithmChange}>
             <option value="depthFirstSearch">Depth first search</option>
+            <option value="breadthFirstSearch">Breadth first search</option>
           </select>
         </li>
       </ul>

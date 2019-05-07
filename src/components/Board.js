@@ -42,9 +42,8 @@ class Board extends Component {
     } = utils;
 
     const algorithms = {
-      depthFirstSearch(currentTile, depth) {
+      depthFirstSearch(currentTile) {
         if (isVisited(currentTile)) return false;
-        if (depth === 0) return false;
         if (isWin(currentTile)) {
           return true;
         }
@@ -53,15 +52,37 @@ class Board extends Component {
 
         const childNodes = generateNodes(currentTile);
         for (let i = 0; i < childNodes.length; ++i) {
-          if (algorithms.depthFirstSearch(childNodes[i], depth - 1))
+          if (algorithms.depthFirstSearch(childNodes[i])) return true;
+        }
+      },
+      breadthFirstSearch(currentTile) {
+        if (isVisited(currentTile)) return false;
+        if (isWin(currentTile)) {
+          return true;
+        }
+        visitNode(currentTile);
+        let indexCurrent = 0;
+
+        while (visited[indexCurrent] !== undefined) {
+          const tile = visited[indexCurrent];
+          indexCurrent++;
+          if (isWin(tile)) {
+            //TODO getPath
             return true;
+          }
+          const childNodes = generateNodes(tile);
+          childNodes.forEach(childTile => {
+            if (isVisited(childTile) === false) visitNode(childTile);
+          });
+          console.log(visited);
+          console.log(visited[indexCurrent]);
         }
       }
     };
 
-    if(isWall(startTile)) return;
+    if (isWall(startTile)) return;
 
-    algorithms[options.algorithm](startTile, sideLength * sideLength);
+    algorithms[options.algorithm](startTile);
     this.setState({ visited: visited });
   };
 
@@ -73,6 +94,11 @@ class Board extends Component {
     this.setState({ wallTiles: [] });
   };
 
+  changeAlgorithm = event => {
+    this.clearVisited();
+    this.setState({ options: { algorithm: event.target.value } });
+  };
+
   render() {
     return (
       <div className="Board">
@@ -82,6 +108,7 @@ class Board extends Component {
           }
           handleClearPath={this.clearVisited}
           handleClearWalls={this.clearWalls}
+          handleAlgorithmChange={this.changeAlgorithm}
         />
         <Map
           sideLength={this.props.sideLength}
