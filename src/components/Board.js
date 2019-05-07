@@ -74,8 +74,6 @@ class Board extends Component {
           childNodes.forEach(childTile => {
             if (isVisited(childTile) === false) visitNode(childTile);
           });
-          console.log(visited);
-          console.log(visited[indexCurrent]);
         }
       }
     };
