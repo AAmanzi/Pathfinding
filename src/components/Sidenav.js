@@ -6,7 +6,7 @@ const Sidenav = props => {
       <ul className="SidenavList">
         <li>
           <select>
-            <option value="DFS">Depth first search</option>
+            <option value="depthFirstSearch">Depth first search</option>
           </select>
         </li>
       </ul>

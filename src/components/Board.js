@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import Map from "./Map";
 import Sidenav from "./Sidenav";
+import { getAlgorithmUtils } from "./../utils";
 
 class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
       wallTiles: [],
-      visited: []
+      visited: [],
+      options: {
+        algorithm: "depthFirstSearch"
+      }
     };
   }
 
@@ -26,71 +30,44 @@ class Board extends Component {
 
   runAlgorithm = startTile => {
     let { sideLength } = this.props;
-    let { visited, wallTiles } = this.state;
+    let { wallTiles, visited, options } = this.state;
+    const utils = getAlgorithmUtils(sideLength, wallTiles, visited);
+    const {
+      isWin,
+      //isBorder,
+      //isWall,
+      isVisited,
+      generateNodes,
+      visitNode
+    } = utils;
 
     sideLength = parseInt(sideLength);
-    const isWin = tile => {
-      return tile === sideLength * sideLength - 2;
-    };
-    const isWall = tile => {
-      if (
-        (tile < sideLength ||
-          tile >= sideLength * (sideLength - 1) ||
-          tile % sideLength === 0 ||
-          (tile + 1) % sideLength === 0) &&
-        tile !== sideLength * sideLength - 2
-      )
-        return true;
-      return wallTiles.find(wallTile => wallTile === tile) !== undefined;
-    };
-    const isVisited = tile => {
-      return (
-        visited.find(element => {
-          return element === tile;
-        }) !== undefined
-      );
-    };
-    const generateNodes = tile => {
-      const right = tile + 1;
-      const down = tile + sideLength;
-      const left = tile - 1;
-      const up = tile - sideLength;
-      const childNodes = [];
 
-      if (isWall(right) === false) childNodes.push(right);
-      if (isWall(down) === false) childNodes.push(down);
-      if (isWall(left) === false) childNodes.push(left);
-      if (isWall(up) === false) childNodes.push(up);
+    const algorithms = {
+      depthFirstSearch(currentTile, depth) {
+        if (isVisited(currentTile)) return false;
+        if (depth === 0) return false;
+        if (isWin(currentTile)) {
+          return true;
+        }
 
-      return childNodes;
-    };
+        visitNode(currentTile);
 
-    const visitNode = node => {
-      visited.push(node);
-    };
-
-    const recursion = (currentTile, depth) => {
-      if (isVisited(currentTile)) return false;
-      if (depth === 0) return false;
-      if (isWin(currentTile)) {
-        return true;
-      }
-
-      visitNode(currentTile);
-
-      const childNodes = generateNodes(currentTile);
-      for (let i = 0; i < childNodes.length; ++i) {
-        if (recursion(childNodes[i], depth - 1)) return true;
+        const childNodes = generateNodes(currentTile);
+        for (let i = 0; i < childNodes.length; ++i) {
+          if (algorithms.depthFirstSearch(childNodes[i], depth - 1))
+            return true;
+        }
       }
     };
 
-    recursion(startTile, sideLength * sideLength);
+    algorithms[options.algorithm](startTile, sideLength * sideLength);
     this.setState({ visited: visited });
   };
 
   clearVisited = () => {
-    this.setState({visited: []});
-  }
+    this.setState({ visited: [] });
+  };
 
   render() {
     return (
