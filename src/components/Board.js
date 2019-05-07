@@ -35,13 +35,11 @@ class Board extends Component {
     const {
       isWin,
       //isBorder,
-      //isWall,
+      isWall,
       isVisited,
       generateNodes,
       visitNode
     } = utils;
-
-    sideLength = parseInt(sideLength);
 
     const algorithms = {
       depthFirstSearch(currentTile, depth) {
@@ -60,6 +58,8 @@ class Board extends Component {
         }
       }
     };
+
+    if(isWall(startTile)) return;
 
     algorithms[options.algorithm](startTile, sideLength * sideLength);
     this.setState({ visited: visited });
