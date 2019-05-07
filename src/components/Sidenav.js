@@ -14,8 +14,11 @@ const Sidenav = props => {
         <button className="Button" onClick={props.handleRun}>
           Run
         </button>
-        <button className="Button" onClick={props.handleClear}>
-          Clear
+        <button className="Button" onClick={props.handleClearPath}>
+          Clear path
+        </button>
+        <button className="Button" onClick={props.handleClearWalls}>
+          Clear walls
         </button>
       </div>
     </nav>

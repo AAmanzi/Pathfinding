@@ -69,6 +69,10 @@ class Board extends Component {
     this.setState({ visited: [] });
   };
 
+  clearWalls = () => {
+    this.setState({ wallTiles: [] });
+  };
+
   render() {
     return (
       <div className="Board">
@@ -76,7 +80,8 @@ class Board extends Component {
           handleRun={() =>
             this.runAlgorithm(parseInt(this.props.sideLength) + 1)
           }
-          handleClear={this.clearVisited}
+          handleClearPath={this.clearVisited}
+          handleClearWalls={this.clearWalls}
         />
         <Map
           sideLength={this.props.sideLength}
