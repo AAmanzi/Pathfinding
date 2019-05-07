@@ -29,11 +29,11 @@
   background-color: red;
 }
 
-.PathTile{
+.PathTile {
   background-color: #00babaaa;
 }
 
-.Sidenav{
+.Sidenav {
   background-color: #eef;
   width: 20%;
   display: flex;
@@ -42,26 +42,26 @@
   flex-direction: column;
 }
 
-.SidenavList{
+.SidenavList {
   list-style: none;
   margin: 20px 0;
 }
 
-.Sidenav select{
+.Sidenav select {
   position: relative;
   border-radius: 4px;
-  border: 1.5px solid #334; 
+  border: 1.5px solid #334;
 }
 
-*:focus{
-  outline:none;
+*:focus {
+  outline: none;
 }
 
-.SidenavButtons{
+.SidenavButtons {
   width: 80%;
 }
 
-.Button{
+.Button {
   border: none;
   border-radius: 4px;
   background-color: #aab;
@@ -69,6 +69,6 @@
   margin: 5px 0;
 }
 
-.Board{
+.Board {
   display: flex;
 }

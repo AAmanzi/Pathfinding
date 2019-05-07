@@ -46,5 +46,5 @@ export const getAlgorithmUtils = (sideLength, wallTiles, visited) => {
     isVisited: isVisited,
     generateNodes: generateNodes,
     visitNode: visitNode
-  }
-}
+  };
+};

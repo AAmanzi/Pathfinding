@@ -1,9 +1,6 @@
 import React from "react";
 
 const Sidenav = props => {
-  // const handleChange = (event) => {
-  //   console.log(event.target.value)
-  // }
   return (
     <nav className="Sidenav">
       <ul className="SidenavList">

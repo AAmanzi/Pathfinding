@@ -63,18 +63,30 @@ class Board extends Component {
         visitNode(currentTile);
         let indexCurrent = 0;
 
+        let childParentPairs = {};
+
         while (visited[indexCurrent] !== undefined) {
-          const tile = visited[indexCurrent];
+          let tile = visited[indexCurrent];
           indexCurrent++;
           if (isWin(tile)) {
-            //TODO getPath
+            visited = [];
+            while(childParentPairs[tile] !== startTile){
+              tile = childParentPairs[tile];
+              visited.push(tile);
+            }
+            visited.push(startTile);
             return true;
           }
           const childNodes = generateNodes(tile);
           childNodes.forEach(childTile => {
-            if (isVisited(childTile) === false) visitNode(childTile);
+            if (isVisited(childTile) === false) {
+              //TODO fix no-loop-func
+              childParentPairs = {...childParentPairs, [childTile]: tile};
+              visitNode(childTile);
+            }
           });
         }
+        
       }
     };
 
