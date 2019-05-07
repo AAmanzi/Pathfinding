@@ -6,24 +6,10 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wallTiles: [],
       isDraw: false,
       visited: []
     };
   }
-
-  handleDraw = index => {
-    this.setState(prevState => {
-      let tmpTiles = [...prevState.wallTiles];
-      let newTiles = tmpTiles.filter(tile => tile !== index);
-
-      if (!tmpTiles.find(tile => tile === index)) newTiles.push(index);
-
-      return {
-        wallTiles: newTiles
-      };
-    });
-  };
 
   enableDrawing = () => {
     this.setState({ isDraw: true });
@@ -51,7 +37,7 @@ class Map extends Component {
       )
         return true;
       return (
-        this.state.wallTiles.find(wallTile => wallTile === tile) !== undefined
+        this.props.wallTiles.find(wallTile => wallTile === tile) !== undefined
       );
     };
     const isVisited = tile => {
@@ -122,13 +108,13 @@ class Map extends Component {
               key={j + sideLength * i}
               mouseOver={
                 isDraw
-                  ? () => this.handleDraw(j + sideLength * i)
+                  ? () => this.props.handleDraw(j + sideLength * i)
                   : () => {
                       return undefined;
                     }
               }
-              mouseClick={() => this.handleDraw(j + sideLength * i)}
-              isWall={this.state.wallTiles.find(
+              mouseClick={() => this.props.handleDraw(j + sideLength * i)}
+              isWall={this.props.wallTiles.find(
                 tile => tile === j + sideLength * i
               )}
               isPath={this.state.visited.find(

@@ -11,11 +11,29 @@ class Board extends Component {
     };
   }
 
+  handleDraw = index => {
+    this.setState(prevState => {
+      let tmpTiles = [...prevState.wallTiles];
+      let newTiles = tmpTiles.filter(tile => tile !== index);
+
+      if (!tmpTiles.find(tile => tile === index)) newTiles.push(index);
+
+      return {
+        wallTiles: newTiles
+      };
+    });
+  };
+
   render() {
     return (
       <div className="Board">
         <Sidenav />
-        <Map sideLength="25" />
+        <Map
+          sideLength="25"
+          handleDraw={this.handleDraw}
+          wallTiles={this.state.wallTiles}
+          visitedTiles={this.state.visited}
+        />
       </div>
     );
   }

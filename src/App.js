@@ -1,13 +1,11 @@
 import React from "react";
 import "./App.css";
-import Map from "./components/Map";
-import Sidenav from "./components/Sidenav";
+import Board from "./components/Board";
 
 function App() {
   return (
     <div className="App">
-      <Sidenav />
-      <Map sideLength="25" />
+      <Board/>
     </div>
   );
 }
