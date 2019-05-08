@@ -8,6 +8,7 @@ const Sidenav = props => {
           <select onChange={props.handleAlgorithmChange}>
             <option value="depthFirstSearch">Depth first search</option>
             <option value="breadthFirstSearch">Breadth first search</option>
+            <option value="dijkstra">Dijkstra search</option>
           </select>
         </li>
       </ul>

@@ -66,27 +66,68 @@ class Board extends Component {
         let childParentPairs = {};
 
         while (visited[indexCurrent] !== undefined) {
-          let tile = visited[indexCurrent];
+          let parentTile = visited[indexCurrent];
           indexCurrent++;
-          if (isWin(tile)) {
+          if (isWin(parentTile)) {
             visited = [];
-            while(childParentPairs[tile] !== startTile){
-              tile = childParentPairs[tile];
-              visited.push(tile);
+            while (childParentPairs[parentTile] !== startTile) {
+              parentTile = childParentPairs[parentTile];
+              visited.push(parentTile);
             }
             visited.push(startTile);
             return true;
           }
-          const childNodes = generateNodes(tile);
+          const childNodes = generateNodes(parentTile);
           childNodes.forEach(childTile => {
             if (isVisited(childTile) === false) {
               //TODO fix no-loop-func
-              childParentPairs = {...childParentPairs, [childTile]: tile};
+              childParentPairs = {
+                ...childParentPairs,
+                [childTile]: parentTile
+              };
               visitNode(childTile);
             }
           });
         }
-        
+      },
+      dijkstra(currentTile) {
+        const isNotVisitedOrIsCloser = (childTile, parentTile) => {
+          return (
+            childParentPairs[childTile] === undefined ||
+            childParentPairs[childTile].distance >
+              childParentPairs[parentTile].distance + 1
+          );
+        };
+        visitNode(currentTile);
+        let indexCurrent = 0;
+        let childParentPairs = { [currentTile]: { distance: 1 } };
+
+        while (visited[indexCurrent] !== undefined) {
+          let parentTile = visited[indexCurrent];
+          indexCurrent++;
+
+          const childNodes = generateNodes(parentTile);
+          childNodes.forEach(childTile => {
+            if (isNotVisitedOrIsCloser(childTile, parentTile) === true) {
+              childParentPairs = {
+                ...childParentPairs,
+                [childTile]: {
+                  distance: childParentPairs[parentTile].distance + 1,
+                  parent: parentTile
+                }
+              };
+              visitNode(childTile);
+            }
+          });
+        }
+
+        visited = [];
+        let parentTile = sideLength * (sideLength - 1) - 2;
+        while (childParentPairs[parentTile] !== undefined) {
+          visited.push(parentTile);
+          parentTile = childParentPairs[parentTile].parent;
+        }
+        visited.push(startTile);
       }
     };
 
