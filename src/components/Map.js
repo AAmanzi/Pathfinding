@@ -19,7 +19,7 @@ class Map extends Component {
   };
 
   createBoard = () => {
-    const { sideLength, visitedTiles, wallTiles } = this.props;
+    const { sideLength, visitedTiles, wallTiles, searchedTiles } = this.props;
     const { isDraw } = this.state;
     const board = [];
 
@@ -51,6 +51,9 @@ class Map extends Component {
                 tile => tile === j + sideLength * i
               )}
               isPath={visitedTiles.find(
+                tile => tile === j + sideLength * i
+              )}
+              isSearched={searchedTiles.find(
                 tile => tile === j + sideLength * i
               )}
             />

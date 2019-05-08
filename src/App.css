@@ -33,6 +33,10 @@
   background-color: #00babaaa;
 }
 
+.SearchedTile {
+  background-color: #55baba55; 
+}
+
 .Sidenav {
   background-color: #eef;
   width: 20%;

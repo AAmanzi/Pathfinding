@@ -9,6 +9,7 @@ class Board extends Component {
     this.state = {
       wallTiles: [],
       visited: [],
+      searched: [],
       options: {
         algorithm: "depthFirstSearch"
       }
@@ -30,7 +31,7 @@ class Board extends Component {
 
   runAlgorithm = startTile => {
     let { sideLength } = this.props;
-    let { wallTiles, visited, options } = this.state;
+    let { wallTiles, visited, searched, options } = this.state;
     const utils = getAlgorithmUtils(sideLength, wallTiles, visited);
     const {
       isWin,
@@ -40,6 +41,8 @@ class Board extends Component {
       generateNodes,
       visitNode
     } = utils;
+
+    let childParentPairs = {};
 
     const algorithms = {
       depthFirstSearch(currentTile) {
@@ -52,7 +55,12 @@ class Board extends Component {
 
         const childNodes = generateNodes(currentTile);
         for (let i = 0; i < childNodes.length; ++i) {
-          if (algorithms.depthFirstSearch(childNodes[i])) return true;
+          const childTile = childNodes[i];
+          // childParentPairs = {
+          //   ...childParentPairs,
+          //   [childTile]: currentTile
+          // };
+          if (algorithms.depthFirstSearch(childTile)) return true;
         }
       },
       breadthFirstSearch(currentTile) {
@@ -63,12 +71,11 @@ class Board extends Component {
         visitNode(currentTile);
         let indexCurrent = 0;
 
-        let childParentPairs = {};
-
         while (visited[indexCurrent] !== undefined) {
           let parentTile = visited[indexCurrent];
           indexCurrent++;
           if (isWin(parentTile)) {
+            searched = [...visited];
             visited = [];
             while (childParentPairs[parentTile] !== startTile) {
               parentTile = childParentPairs[parentTile];
@@ -100,7 +107,7 @@ class Board extends Component {
         };
         visitNode(currentTile);
         let indexCurrent = 0;
-        let childParentPairs = { [currentTile]: { distance: 1 } };
+        childParentPairs = { [currentTile]: { distance: 1 } };
 
         while (visited[indexCurrent] !== undefined) {
           let parentTile = visited[indexCurrent];
@@ -120,7 +127,7 @@ class Board extends Component {
             }
           });
         }
-
+        searched = [...visited];
         visited = [];
         let parentTile = sideLength * (sideLength - 1) - 2;
         while (childParentPairs[parentTile] !== undefined) {
@@ -134,11 +141,15 @@ class Board extends Component {
     if (isWall(startTile)) return;
 
     algorithms[options.algorithm](startTile);
-    this.setState({ visited: visited });
+    this.setState({ visited: visited, searched: searched });
   };
 
   clearVisited = () => {
     this.setState({ visited: [] });
+  };
+
+  clearSearched = () => {
+    this.setState({ searched: [] });
   };
 
   clearWalls = () => {
@@ -147,6 +158,7 @@ class Board extends Component {
 
   changeAlgorithm = event => {
     this.clearVisited();
+    this.clearSearched();
     this.setState({ options: { algorithm: event.target.value } });
   };
 
@@ -157,7 +169,10 @@ class Board extends Component {
           handleRun={() =>
             this.runAlgorithm(parseInt(this.props.sideLength) + 1)
           }
-          handleClearPath={this.clearVisited}
+          handleClearPath={() => {
+            this.clearVisited();
+            this.clearSearched();
+          }}
           handleClearWalls={this.clearWalls}
           handleAlgorithmChange={this.changeAlgorithm}
         />
@@ -166,6 +181,7 @@ class Board extends Component {
           handleDraw={this.handleDraw}
           wallTiles={this.state.wallTiles}
           visitedTiles={this.state.visited}
+          searchedTiles={this.state.searched}
         />
       </div>
     );
